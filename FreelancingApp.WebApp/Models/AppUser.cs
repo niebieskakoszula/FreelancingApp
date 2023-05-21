@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FreelancingApp.WebApp.Models
 {
-    [Table("Profiles")]
+    [Table("AppUser")]
     public class AppUser : IdentityUser
     {
         [Required]
