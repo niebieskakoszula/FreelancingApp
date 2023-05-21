@@ -22,8 +22,8 @@ namespace FreelancingApp.WebApp.Models
         [Required]
         public ICollection<Review> Reviews { get; set; } = null!;
         [Required]
-        public IdentityUser Owner { get; set; } = null!;
+        public AppUser Owner { get; set; } = null!;
         [Required]
-        public ICollection<IdentityUser>? Moderators { get; set; }
+        public ICollection<AppUser>? Moderators { get; set; }
     }
 }
