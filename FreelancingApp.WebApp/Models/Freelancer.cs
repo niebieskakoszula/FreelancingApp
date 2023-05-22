@@ -8,14 +8,13 @@ namespace FreelancingApp.WebApp.Models
     {
         [Key]
         public string Id { get; set; } = null!;
-        [ForeignKey("AppUserId")]
-        public string FreelancerId { get; set; } = null!;
+        [ForeignKey("AppUser")]
+        public string AppUserId { get; set; } = null!;
         [Required]
-        public AppUser User { get; set; } = null!;
+        public AppUser AppUser { get; set; } = null!;
         [Required]
         public ICollection<Experience> Experience { get; set; } = null!;
         public string? PhotoUrl { get; set; }
         public string? Description { get; set; }
-        public ContactInfo? Contact { get; set; }
     }
 }

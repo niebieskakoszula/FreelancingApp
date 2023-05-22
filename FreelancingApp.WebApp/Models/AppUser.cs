@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -12,5 +11,6 @@ namespace FreelancingApp.WebApp.Models
         public string FreelancerId { get; set; } = null!;
         [AllowNull]
         public Freelancer? FreelancerProfile { get; set; }
+        public ContactInfo? Contact { get; set; }
     }
 }

@@ -16,6 +16,6 @@ namespace FreelancingApp.WebApp.Models
         [MaxLength(200)]
         public string Description { get; set; } = null!;
         [Required]
-        public int Proficiency { get; set; }
+        public int Level { get; set; }
     }
 }
