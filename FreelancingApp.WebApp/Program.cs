@@ -8,7 +8,7 @@ namespace FreelancingApp.WebApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +28,11 @@ namespace FreelancingApp.WebApp
 
             var app = builder.Build();
 
+            /*if (args.Length == 1 && args[0].ToLower() == "seeddata")
+            {
+                await Seed.SeedCurrencies(app);
+            }*/
+            await Seed.SeedCurrencies(app);
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
