@@ -22,20 +22,20 @@ namespace FreelancingApp.WebApp.Controllers
         // GET: Freelancers
         public async Task<IActionResult> Index()
         {
-              return _context.Freelancer != null ? 
-                          View(await _context.Freelancer.ToListAsync()) :
+              return _context.Freelancers != null ? 
+                          View(await _context.Freelancers.ToListAsync()) :
                           Problem("Entity set 'AppDbContext.Freelancer'  is null.");
         }
 
         // GET: Freelancers/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Freelancer == null)
+            if (id == null || _context.Freelancers == null)
             {
                 return NotFound();
             }
 
-            var freelancer = await _context.Freelancer
+            var freelancer = await _context.Freelancers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (freelancer == null)
             {
@@ -70,12 +70,12 @@ namespace FreelancingApp.WebApp.Controllers
         // GET: Freelancers/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Freelancer == null)
+            if (id == null || _context.Freelancers == null)
             {
                 return NotFound();
             }
 
-            var freelancer = await _context.Freelancer.FindAsync(id);
+            var freelancer = await _context.Freelancers.FindAsync(id);
             if (freelancer == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace FreelancingApp.WebApp.Controllers
         // GET: Freelancers/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Freelancer == null)
+            if (id == null || _context.Freelancers == null)
             {
                 return NotFound();
             }
 
-            var freelancer = await _context.Freelancer
+            var freelancer = await _context.Freelancers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (freelancer == null)
             {
@@ -141,14 +141,14 @@ namespace FreelancingApp.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.Freelancer == null)
+            if (_context.Freelancers == null)
             {
                 return Problem("Entity set 'AppDbContext.Freelancer'  is null.");
             }
-            var freelancer = await _context.Freelancer.FindAsync(id);
+            var freelancer = await _context.Freelancers.FindAsync(id);
             if (freelancer != null)
             {
-                _context.Freelancer.Remove(freelancer);
+                _context.Freelancers.Remove(freelancer);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace FreelancingApp.WebApp.Controllers
 
         private bool FreelancerExists(string id)
         {
-          return (_context.Freelancer?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Freelancers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
