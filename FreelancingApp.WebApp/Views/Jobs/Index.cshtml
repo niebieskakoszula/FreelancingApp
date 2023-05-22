@@ -1,19 +1,48 @@
-﻿@model IEnumerable<FreelancingApp.WebApp.Models.Job>
+﻿@model FreelancingApp.WebApp.ViewModels.Jobs.JobsViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Job";
 }
 
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Tutaj</a>
 </p>
+
+<form asp-controller="Movies" asp-action="Index" method="get">
+    <p>
+
+        @*<select asp-for="MovieGenre" asp-items="Model.Genres">
+        <option value="">All</option>
+        </select>*@
+
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Created at
+            </th>
+            <th>
+                Deadline
+            </th>
+
+            @*<th>
+                @Html.DisplayNameFor(model => model.Jobs.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -26,12 +55,12 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Deadline)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Jobs!) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -40,7 +69,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @Html.DisplayFor(modelItem => item.PaymentAmount)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)
