@@ -10,6 +10,7 @@ using FreelancingApp.WebApp.Models;
 
 namespace FreelancingApp.WebApp.Controllers
 {
+    [Route("/[controller]")]
     public class FreelancersController : Controller
     {
         private readonly AppDbContext _context;
@@ -28,6 +29,7 @@ namespace FreelancingApp.WebApp.Controllers
         }
 
         // GET: Freelancers/Details/5
+        [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Freelancers == null)
@@ -46,6 +48,7 @@ namespace FreelancingApp.WebApp.Controllers
         }
 
         // GET: Freelancers/Create
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
@@ -68,6 +71,7 @@ namespace FreelancingApp.WebApp.Controllers
         }
 
         // GET: Freelancers/Edit/5
+        [HttpGet("Edit/{id?}")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Freelancers == null)
@@ -119,6 +123,7 @@ namespace FreelancingApp.WebApp.Controllers
         }
 
         // GET: Freelancers/Delete/5
+        [HttpGet("Delete/{id?}")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Freelancers == null)
