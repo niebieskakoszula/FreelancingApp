@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FreelancingApp.WebApp.Models
 {
     [Table("AppUser")]
     public class AppUser : IdentityUser
     {
-        [Required]
-        public ICollection<Experience> Experience { get; set; } = null!;
-        public string? PhotoUrl { get; set; }
-        public string? Description { get; set; }
-        public ContactInfo? Contact { get; set; }
+        [ForeignKey("FreelancerId"), AllowNull]
+        public string FreelancerId { get; set; } = null!;
+        [AllowNull]
+        public Freelancer? FreelancerProfile { get; set; }
     }
 }

@@ -17,5 +17,6 @@ namespace FreelancingApp.WebApp.Data
         public DbSet<ContactInfo> Contacts { get; set; } = null!;
         public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Skill> Skills { get; set; } = null!;
+        public DbSet<Freelancer> Freelancers { get; set; } = default!;
     }
 }
