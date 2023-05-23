@@ -37,6 +37,9 @@ namespace FreelancingApp.WebApp.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ContactId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -45,8 +48,7 @@ namespace FreelancingApp.WebApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FreelancerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -85,8 +87,7 @@ namespace FreelancingApp.WebApp.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("FreelancerId")
-                        .IsUnique();
+                    b.HasIndex("ContactId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -165,12 +166,12 @@ namespace FreelancingApp.WebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CurrencyName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
-                    b.Property<string>("CurrencySymbol")
+                    b.Property<string>("Symbol")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -193,13 +194,13 @@ namespace FreelancingApp.WebApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("FreelancerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("FreelancerId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("JobId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Proficiency")
+                    b.Property<int>("Level")
                         .HasColumnType("int");
 
                     b.Property<int>("SkillId")
@@ -221,17 +222,17 @@ namespace FreelancingApp.WebApp.Migrations
 
             modelBuilder.Entity("FreelancingApp.WebApp.Models.Freelancer", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("ContactId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FreelancerId")
+                    b.Property<string>("AppUserId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoUrl")
@@ -239,7 +240,8 @@ namespace FreelancingApp.WebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
+                    b.HasIndex("AppUserId")
+                        .IsUnique();
 
                     b.ToTable("Freelancers");
                 });
@@ -268,7 +270,13 @@ namespace FreelancingApp.WebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHourly")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("PaymentAmount")
                         .HasColumnType("float");
 
                     b.Property<string>("Title")
@@ -327,7 +335,7 @@ namespace FreelancingApp.WebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("SkillName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -476,13 +484,11 @@ namespace FreelancingApp.WebApp.Migrations
                         .WithMany("Moderators")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("FreelancingApp.WebApp.Models.Freelancer", "FreelancerProfile")
-                        .WithOne("User")
-                        .HasForeignKey("FreelancingApp.WebApp.Models.AppUser", "FreelancerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("FreelancingApp.WebApp.Models.ContactInfo", "Contact")
+                        .WithMany()
+                        .HasForeignKey("ContactId");
 
-                    b.Navigation("FreelancerProfile");
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("FreelancingApp.WebApp.Models.Company", b =>
@@ -525,11 +531,13 @@ namespace FreelancingApp.WebApp.Migrations
 
             modelBuilder.Entity("FreelancingApp.WebApp.Models.Freelancer", b =>
                 {
-                    b.HasOne("FreelancingApp.WebApp.Models.ContactInfo", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
+                    b.HasOne("FreelancingApp.WebApp.Models.AppUser", "AppUser")
+                        .WithOne("FreelancerProfile")
+                        .HasForeignKey("FreelancingApp.WebApp.Models.Freelancer", "AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Contact");
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("FreelancingApp.WebApp.Models.Job", b =>
@@ -623,6 +631,11 @@ namespace FreelancingApp.WebApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FreelancingApp.WebApp.Models.AppUser", b =>
+                {
+                    b.Navigation("FreelancerProfile");
+                });
+
             modelBuilder.Entity("FreelancingApp.WebApp.Models.Company", b =>
                 {
                     b.Navigation("Jobs");
@@ -635,9 +648,6 @@ namespace FreelancingApp.WebApp.Migrations
             modelBuilder.Entity("FreelancingApp.WebApp.Models.Freelancer", b =>
                 {
                     b.Navigation("Experience");
-
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("FreelancingApp.WebApp.Models.Job", b =>

@@ -1,4 +1,4 @@
-namespace FreelancingApp.WebApp.Models
+namespace FreelancingApp.WebApp.ViewModels
 {
     public class ErrorViewModel
     {

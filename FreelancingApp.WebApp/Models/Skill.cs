@@ -10,6 +10,6 @@ namespace FreelancingApp.WebApp.Models
         public int Id { get; set; }
         [Required]
         [MaxLength(50)]
-        public string SkillName { get; set; } = null!;
+        public string Name { get; set; } = null!;
     }
 }

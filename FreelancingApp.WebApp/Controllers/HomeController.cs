@@ -1,4 +1,5 @@
 ﻿using FreelancingApp.WebApp.Models;
+using FreelancingApp.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -12,12 +13,10 @@ namespace FreelancingApp.WebApp.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
             return View();
         }
-
         public IActionResult Privacy()
         {
             return View();

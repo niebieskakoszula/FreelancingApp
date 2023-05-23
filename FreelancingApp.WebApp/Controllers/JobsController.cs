@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FreelancingApp.WebApp.Data;
 using FreelancingApp.WebApp.Models;
+using FreelancingApp.WebApp.ViewModels.Jobs;
 
 namespace FreelancingApp.WebApp.Controllers
 {
+    [Route("[controller]")]
     public class JobsController : Controller
     {
         private readonly AppDbContext _context;
@@ -20,14 +22,28 @@ namespace FreelancingApp.WebApp.Controllers
         }
 
         // GET: Jobs
-        public async Task<IActionResult> Index()
+        [HttpGet("{SearchString?}")]
+        public async Task<IActionResult> Index(string? SearchString)
         {
-              return _context.Jobs != null ? 
-                          View(await _context.Jobs.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Jobs'  is null.");
+            if (_context.Jobs == null)
+            {
+                return Problem("Entity set 'AppDbContext.Jobs'  is null.");
+            }
+            var query = _context.Jobs.AsQueryable();
+
+            if(!string.IsNullOrEmpty(SearchString))
+            {
+                query = query.Where(j => j.Title.Contains(SearchString));
+            }
+
+            var result = new JobsViewModel() { Jobs = await query.ToListAsync() };
+
+
+            return View(result);
         }
 
         // GET: Jobs/Details/5
+        [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Jobs == null)
@@ -46,6 +62,7 @@ namespace FreelancingApp.WebApp.Controllers
         }
 
         // GET: Jobs/Create
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
@@ -68,6 +85,7 @@ namespace FreelancingApp.WebApp.Controllers
         }
 
         // GET: Jobs/Edit/5
+        [HttpGet("Edit/{id?}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Jobs == null)
@@ -119,6 +137,7 @@ namespace FreelancingApp.WebApp.Controllers
         }
 
         // GET: Jobs/Delete/5
+        [HttpGet("Delete/{id?}")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Jobs == null)

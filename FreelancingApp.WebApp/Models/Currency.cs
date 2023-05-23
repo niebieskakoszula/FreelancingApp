@@ -10,9 +10,9 @@ namespace FreelancingApp.WebApp.Models
         public int Id { get; set; }
         [Required]
         [MaxLength(3)]
-        public string CurrencyName { get; set; } = null!;
+        public string Name { get; set; } = null!;
         [Required]
         [MaxLength(10)]
-        public string CurrencySymbol { get; set; } = null!;
+        public string Symbol { get; set; } = null!;
     }
 }

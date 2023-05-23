@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FreelancingApp.WebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialRelease : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,8 +46,8 @@ namespace FreelancingApp.WebApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrencyName = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    CurrencySymbol = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Symbol = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,7 +60,7 @@ namespace FreelancingApp.WebApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SkillName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,8 +140,7 @@ namespace FreelancingApp.WebApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FreelancerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactId = table.Column<int>(type: "int", nullable: true),
                     CompanyId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -219,6 +218,27 @@ namespace FreelancingApp.WebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Freelancers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Freelancers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Freelancers_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Jobs",
                 columns: table => new
                 {
@@ -226,8 +246,10 @@ namespace FreelancingApp.WebApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
+                    PaymentAmount = table.Column<double>(type: "float", nullable: false),
                     CurrencyId = table.Column<int>(type: "int", nullable: false),
+                    IsHourly = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Deadline = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -258,17 +280,17 @@ namespace FreelancingApp.WebApp.Migrations
                     SkillId = table.Column<int>(type: "int", nullable: false),
                     Years = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Proficiency = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    FreelancerId = table.Column<int>(type: "int", nullable: true),
                     JobId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Experiences", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Experiences_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Experiences_Freelancers_FreelancerId",
+                        column: x => x.FreelancerId,
+                        principalTable: "Freelancers",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Experiences_Jobs_JobId",
@@ -376,9 +398,9 @@ namespace FreelancingApp.WebApp.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Experiences_AppUserId",
+                name: "IX_Experiences_FreelancerId",
                 table: "Experiences",
-                column: "AppUserId");
+                column: "FreelancerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Experiences_JobId",
@@ -389,6 +411,12 @@ namespace FreelancingApp.WebApp.Migrations
                 name: "IX_Experiences_SkillId",
                 table: "Experiences",
                 column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Freelancers_AppUserId",
+                table: "Freelancers",
+                column: "AppUserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Jobs_CompanyId",
@@ -477,6 +505,9 @@ namespace FreelancingApp.WebApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Freelancers");
 
             migrationBuilder.DropTable(
                 name: "Skills");

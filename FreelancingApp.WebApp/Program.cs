@@ -8,7 +8,7 @@ namespace FreelancingApp.WebApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +27,18 @@ namespace FreelancingApp.WebApp
                    .AddCookie();
 
             var app = builder.Build();
+
+            if (args.Length == 1 && args[0].ToLower() == "seeddata")
+            {
+                await Seed.SeedCurrencies(app);
+                await Seed.SeedSkills(app);
+                await Seed.SeedRolesAsync(app);
+                await Seed.SeedUsersAsync(app);
+                await Seed.SeedExpieriences(app);
+                await Seed.SeedFreelancers(app);
+                await Seed.SeedCompanies(app);
+                await Seed.SeedJobs(app);
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
