@@ -7,7 +7,7 @@ namespace FreelancingApp.WebApp.Models
     public class Freelancer
     {
         [Key]
-        public string Id { get; set; } = null!;
+        public int Id { get; set; }
         [ForeignKey("AppUser")]
         public string AppUserId { get; set; } = null!;
         [Required]

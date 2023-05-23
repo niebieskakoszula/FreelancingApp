@@ -48,7 +48,6 @@ namespace FreelancingApp.WebApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FreelancerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -195,8 +194,8 @@ namespace FreelancingApp.WebApp.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("FreelancerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("FreelancerId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("JobId")
                         .HasColumnType("int");
@@ -223,8 +222,11 @@ namespace FreelancingApp.WebApp.Migrations
 
             modelBuilder.Entity("FreelancingApp.WebApp.Models.Freelancer", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
                         .IsRequired()

@@ -28,11 +28,18 @@ namespace FreelancingApp.WebApp
 
             var app = builder.Build();
 
-            /*if (args.Length == 1 && args[0].ToLower() == "seeddata")
+            if (args.Length == 1 && args[0].ToLower() == "seeddata")
             {
                 await Seed.SeedCurrencies(app);
-            }*/
-            await Seed.SeedCurrencies(app);
+                await Seed.SeedSkills(app);
+                await Seed.SeedRolesAsync(app);
+                await Seed.SeedUsersAsync(app);
+                await Seed.SeedExpieriences(app);
+                await Seed.SeedFreelancers(app);
+                await Seed.SeedCompanies(app);
+                await Seed.SeedJobs(app);
+            }
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

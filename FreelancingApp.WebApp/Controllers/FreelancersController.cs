@@ -30,9 +30,9 @@ namespace FreelancingApp.WebApp.Controllers
 
         // GET: Freelancers/Details/5
         [HttpGet("Details/{id}")]
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Freelancers == null)
+            if (_context.Freelancers == null)
             {
                 return NotFound();
             }
@@ -92,7 +92,7 @@ namespace FreelancingApp.WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,FreelancerId,PhotoUrl,Description")] Freelancer freelancer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FreelancerId,PhotoUrl,Description")] Freelancer freelancer)
         {
             if (id != freelancer.Id)
             {
@@ -124,7 +124,7 @@ namespace FreelancingApp.WebApp.Controllers
 
         // GET: Freelancers/Delete/5
         [HttpGet("Delete/{id?}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null || _context.Freelancers == null)
             {
@@ -160,7 +160,7 @@ namespace FreelancingApp.WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FreelancerExists(string id)
+        private bool FreelancerExists(int id)
         {
           return (_context.Freelancers?.Any(e => e.Id == id)).GetValueOrDefault();
         }

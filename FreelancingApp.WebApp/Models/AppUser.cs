@@ -8,7 +8,7 @@ namespace FreelancingApp.WebApp.Models
     public class AppUser : IdentityUser
     {
         [ForeignKey("FreelancerId"), AllowNull]
-        public string FreelancerId { get; set; } = null!;
+        public string? FreelancerId { get; set; }
         [AllowNull]
         public Freelancer? FreelancerProfile { get; set; }
         public ContactInfo? Contact { get; set; }
